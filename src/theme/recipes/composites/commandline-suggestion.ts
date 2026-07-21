@@ -2,7 +2,7 @@ import { defineSlotRecipe } from '@pandacss/dev';
 
 export const commandlineSuggestion = defineSlotRecipe({
   className: 'commandline-suggestion',
-  slots: ['root', 'command', 'actions'],
+  slots: ['root', 'command', 'actions', 'expandTrigger'],
   base: {
     root: {
       alignItems: 'start',
@@ -15,17 +15,6 @@ export const commandlineSuggestion = defineSlotRecipe({
       width: 'max-content',
       maxWidth: 'full',
       position: 'relative',
-      _after: {
-        content: '""',
-        display: 'block',
-        position: 'absolute',
-        bottom: '0',
-        left: '0',
-        right: '0',
-        zIndex: '1',
-        pointerEvents: 'none',
-        //'--status-base-color': '{colors.black.a7}', // {colors.colorPalette.surface.border}',
-      },
     },
     command: {
       position: 'relative',
@@ -45,6 +34,20 @@ export const commandlineSuggestion = defineSlotRecipe({
       alignItems: 'center',
       gap: '1',
       flexShrink: 0,
+    },
+    expandTrigger: {
+      position: 'absolute',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      bottom: '-1',
+      height: '6',
+      width: '100%',
+      left: '0',
+      right: '0',
+      zIndex: '1',
+      transitionProperty: 'bottom',
+      transitionDuration: 'fast',
     },
   },
   variants: {
@@ -91,33 +94,23 @@ export const commandlineSuggestion = defineSlotRecipe({
     },
     hasMore: {
       true: {
-        root: {
-          _after: {
-            height: '10px',
-            // Solid fill masked by two intersecting linear gradients so the
-            // fade tapers along both the top and the right edge (rectangular
-            // corner fade) instead of only fading upward.
-            // backgroundColor: 'var(--status-base-color)',
-            backgroundColor: '{colors.black.a7}',
-            maskImage:
-              'linear-gradient(to top, black, transparent), linear-gradient(to right, black, transparent)',
-            maskComposite: 'intersect',
-            WebkitMaskImage:
-              'linear-gradient(to top, black, transparent), linear-gradient(to right, black, black 70%, transparent 80%)',
-            WebkitMaskComposite: 'source-in',
-          },
+        expandTrigger: {
+          // Radial gradient fading outward from the middle of the
+          // pseudo-element, using --gradient-base as the base color.
+          '--gradient-base': 'colors.colorPalette.1',
+          backgroundImage:
+            'radial-gradient(ellipse 70px 24px at 50% 70%, var(--gradient-base), var(--gradient-base) 30%, transparent)',
         },
       },
       false: {
+        expandTrigger: {
+          bottom: '1',
+          _closed: {
+            display: 'none',
+          },
+        },
         command: {
           translate: '0 5px',
-          // transitionProperty: 'translate',
-          // transitionDuration: '0.5s',
-          // transitionTimingFunction: 'step-start',
-          // _open: {
-          //   translate: '0 0',
-          //   // transitionTimingFunction: 'step-end',
-          // },
         },
       },
     },

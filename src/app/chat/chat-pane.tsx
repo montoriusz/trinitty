@@ -9,7 +9,14 @@ import {
   type CommandlineSuggestionAction,
 } from '@/ui/composites/commandline-suggestion';
 import { Markdown } from '@/ui/composites/markdown';
-import { IconButton, RelativeTime, SkeletonText, Spinner, TextareaSlot } from '@/ui/primitives';
+import {
+  Clipboard,
+  IconButton,
+  RelativeTime,
+  SkeletonText,
+  Spinner,
+  TextareaSlot,
+} from '@/ui/primitives';
 import * as ScrollArea from '@/ui/primitives/scroll-area';
 import {
   CLASS_CHAT_MESSAGE,
@@ -74,7 +81,25 @@ function MessageBubble({ msg, onSuggestionAction, suggestionStatus }: MessageBub
       )}
       <Box color="fg.muted" fontSize="xs" mt="1">
         <RelativeTime value={msg.ts} />
-        {msg.type === 'Assistant' ? <>&ensp;&bull;&ensp;{msg.model}</> : null}
+        {msg.type === 'Assistant' ? (
+          <>
+            &ensp;&bull;&ensp;{msg.model}
+            &ensp;&bull;&ensp;
+            <Clipboard.Root value={msg.msg} display="inline-flex">
+              <Clipboard.Control>
+                <Clipboard.Trigger
+                  asChild
+                  title="Copy markdown rsponse"
+                  aria-label="Copy assistant response markdown to clipboard"
+                >
+                  <IconButton variant="plain" size="2xs" color="fg.muted" my="-1">
+                    <Clipboard.Indicator />
+                  </IconButton>
+                </Clipboard.Trigger>
+              </Clipboard.Control>
+            </Clipboard.Root>
+          </>
+        ) : null}
       </Box>
     </Flex>
   );

@@ -93,10 +93,11 @@ export function CommandlineSuggestion({
         <Collapsible.Content ref={contentRef}>{commandline}</Collapsible.Content>
         <Collapsible.Trigger
           disabled={!open && !hasMore}
-          className={css({ position: 'absolute', inset: '0' })}
+          className={styles.expandTrigger}
           // aria-label={open ? 'Collapse' : 'Expand'}
-        />
-        <Collapsible.Indicator />
+        >
+          <Collapsible.Indicator />
+        </Collapsible.Trigger>
       </Collapsible.Root>
       <div className={styles.actions}>
         <IconButton

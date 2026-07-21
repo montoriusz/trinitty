@@ -59,7 +59,7 @@ function getCache(): TerminalCache {
       overviewRuler: {
         width: 12,
       },
-      scrollback: 80,
+      scrollback: 1000,
     });
     const fitAddon = new FitAddon();
     const terminalSections = new TerminalSections();

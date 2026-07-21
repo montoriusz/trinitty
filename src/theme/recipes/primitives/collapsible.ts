@@ -16,6 +16,17 @@ export const collapsible = defineSlotRecipe({
         animationDuration: 'normal',
       },
     },
+    trigger: {
+      cursor: 'pointer',
+    },
+    indicator: {
+      _open: {
+        rotate: '180deg',
+      },
+      _closed: {
+        rotate: '0deg',
+      },
+    },
   },
   variants: {
     variant: {
@@ -28,7 +39,7 @@ export const collapsible = defineSlotRecipe({
           pb: '0',
           position: 'relative',
           _open: {
-            pb: '2.5',
+            pb: '7',
           },
         },
         content: {

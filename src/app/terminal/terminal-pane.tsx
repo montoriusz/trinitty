@@ -3,9 +3,11 @@ import { Box } from 'styled-system/jsx';
 
 import '@xterm/xterm/css/xterm.css';
 import { css } from 'styled-system/css';
+import { useIsDarkMode } from '../shared/dark-mode-provider';
 import { useDebouncedCallback } from '../shared/use-debounced-callback';
 import { useEmitUpdateMatching } from './section-matching';
 import { fitTerminal, terminal } from './terminal';
+import { getTerminalTheme } from './themes';
 
 export interface TerminalHandle {
   fit: () => void;
@@ -15,8 +17,16 @@ export const TerminalPane = forwardRef<TerminalHandle>(function TerminalPane(_, 
   const containerRef = useRef<HTMLDivElement>(null);
   const emitUpdateMatching = useEmitUpdateMatching();
   const scheduleFit = useDebouncedCallback(fitTerminal, 100);
+  const isDark = useIsDarkMode();
 
   useImperativeHandle(handleRef, () => ({ fit: scheduleFit }), [scheduleFit]);
+
+  // Sync the xterm theme with the effective UI dark/light mode. Matches the
+  // previous behaviour in providers.tsx, where this only ran in the main
+  // window (the settings window never mounts a TerminalPane).
+  useEffect(() => {
+    terminal.options.theme = getTerminalTheme(isDark);
+  }, [isDark]);
 
   useEffect(() => {
     const container = containerRef.current;
