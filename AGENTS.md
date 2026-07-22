@@ -34,12 +34,14 @@ Uses pnpm.
 ## Conventions
 
 - Save implementation plans in the project-root `implementation-plans/` directory.
-- Frontend is TypeScript + React; keep `tsc` passing.
-- Tanstack Query for simple data fetching and caching.
-- For backend-synced and other stores use Zustand.
-- xterm.js for used as a terminal emulator.
-- There is an assistant chat next to the terminal.
-- Do not edit generated files in `src/generated/`; regenerate them instead.
+- Frontend is TypeScript + React; keep `typecheck` passing.
+- Pick Tanstack Query for simple data fetching and caching.
+- Pick Zustand for two-way backend sync and other stores.
+- xterm.js used as a terminal emulator.
+- There are two view modes:
+  - Split: an assistant chat next to the terminal,
+  - Notebook: a single stream of interleaved terminal output and chat messages.
+- Do not edit generated files in `src/generated/`; regenerate them instead and apply lint fixes if necessary.
 - Styling uses Panda CSS (`styled-system/`) and Ark UI primitives — avoid raw CSS unless necessary.
 - Backend is Rust; run `cargo check` in `src-tauri/`.
 - In Rust, write async code using `tokio` where it has advantages.

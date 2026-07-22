@@ -208,6 +208,19 @@ pub async fn resize_pty(rows: u16, cols: u16, state: State<'_, TerminalSession>)
     Ok(())
 }
 
+/// Raw bytes of the current, uncommitted section (everything since the last
+/// OSC-133 `D`), lossily decoded as UTF-8. Read-only: it borrows the recorder
+/// and never mutates it, so callers can use it to rebuild the live xterm
+/// buffer for view transitions (Notebook ↔ Split) without affecting the
+/// reader thread's future `D`-driven `persist_section`.
+#[tauri::command]
+pub fn get_live_section_raw(state: State<'_, TerminalSession>) -> Option<String> {
+    let recorder = state.recorder.lock().unwrap();
+    recorder
+        .current_snapshot()
+        .map(|s| String::from_utf8_lossy(&s.raw).into_owned())
+}
+
 /// Spawn the PTY reader thread.
 ///
 /// The thread owns a clone of the shared [`EventSlot`] (not a `Channel`): per

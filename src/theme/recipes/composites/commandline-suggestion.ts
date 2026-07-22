@@ -48,6 +48,16 @@ export const commandlineSuggestion = defineSlotRecipe({
       zIndex: '1',
       transitionProperty: 'bottom',
       transitionDuration: 'fast',
+
+      '& > div': {
+        backgroundColor: 'transparent',
+        transitionProperty: 'background-color',
+        transitionDuration: 'fast',
+        borderRadius: 'l3',
+        _hover: {
+          backgroundColor: 'colorPalette.subtle.bg',
+        },
+      },
     },
   },
   variants: {
@@ -60,7 +70,8 @@ export const commandlineSuggestion = defineSlotRecipe({
       },
       surface: {
         root: {
-          bg: 'colorPalette.surface.bg',
+          // bg: 'colorPalette.surface.bg',
+          bg: 'colorPalette.3',
           borderWidth: '1px',
           borderColor: 'colorPalette.surface.border',
           color: 'colorPalette.surface.fg',
@@ -97,9 +108,10 @@ export const commandlineSuggestion = defineSlotRecipe({
         expandTrigger: {
           // Radial gradient fading outward from the middle of the
           // pseudo-element, using --gradient-base as the base color.
-          '--gradient-base': 'colors.colorPalette.1',
+          '--gradient-base': 'colors.colorPalette.3',
           backgroundImage:
-            'radial-gradient(ellipse 70px 24px at 50% 70%, var(--gradient-base), var(--gradient-base) 30%, transparent)',
+            'radial-gradient(ellipse 100% 80% at 50% 110%, var(--gradient-base), var(--gradient-base) 30%, transparent)',
+          '& > div': {},
         },
       },
       false: {

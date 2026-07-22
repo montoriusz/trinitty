@@ -10,7 +10,8 @@ const TERMINAL_THEME_DARK: ITheme = {
 };
 
 const TERMINAL_THEME_LIGHT: ITheme = {
-  background: '#f7f8f6',
+  // background: '#f7f8f6',
+  background: '#f7f9f8',
   foreground: '#33374c',
   cursor: '#33374c',
   cursorAccent: '#e8e9ec',

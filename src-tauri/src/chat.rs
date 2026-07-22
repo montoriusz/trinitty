@@ -54,7 +54,7 @@ pub enum ChatMessage {
         exit_code: Option<i32>,
 
         /// Whether the command was started (OSC 133 C fired) before finishing.
-        executed: bool, // TODO: verify
+        executed: bool,
 
         cols: u16,
         rows: u16,

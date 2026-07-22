@@ -3,11 +3,11 @@ import { Box } from 'styled-system/jsx';
 
 import '@xterm/xterm/css/xterm.css';
 import { css } from 'styled-system/css';
-import { useIsDarkMode } from '../shared/dark-mode-provider';
-import { useDebouncedCallback } from '../shared/use-debounced-callback';
-import { useEmitUpdateMatching } from './section-matching';
-import { fitTerminal, terminal } from './terminal';
-import { getTerminalTheme } from './themes';
+import { useIsDarkMode } from '../../shared/dark-mode-provider';
+import { useDebouncedCallback } from '../../shared/use-debounced-callback';
+import { fitTerminal, terminal } from '../terminal';
+import { getTerminalTheme } from '../themes';
+import { useEmitUpdateMatching } from './use-emit-update-matching';
 
 export interface TerminalHandle {
   fit: () => void;

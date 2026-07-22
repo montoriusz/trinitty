@@ -18,6 +18,9 @@ export const collapsible = defineSlotRecipe({
     },
     trigger: {
       cursor: 'pointer',
+      _hover: {
+        color: 'col',
+      },
     },
     indicator: {
       _open: {

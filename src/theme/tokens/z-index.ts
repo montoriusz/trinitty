@@ -1,8 +1,14 @@
-import { defineTokens } from '@pandacss/dev'
+import { defineTokens } from '@pandacss/dev';
 
 export const zIndex = defineTokens.zIndex({
   hide: {
     value: -1,
+  },
+  l1: {
+    value: 1,
+  },
+  l2: {
+    value: 2,
   },
   base: {
     value: 0,
@@ -37,4 +43,4 @@ export const zIndex = defineTokens.zIndex({
   tooltip: {
     value: 1800,
   },
-})
+});

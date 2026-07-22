@@ -34,6 +34,11 @@ export class TerminalSections implements ITerminalAddon {
   private sections: Section[] = [];
   private sectionsByAid: Map<string, Section> = new Map();
   private lastAid = '';
+  private lastCommittedAid = '';
+
+  onNewPrompt: ((aid: string) => void) | undefined;
+  /** True while `rebuildTerminal` replays raw segments iwsnto the buffer. */
+  isReplaying: () => boolean = () => false;
 
   activate(terminal: Terminal): void {
     this.terminal = terminal;
@@ -44,6 +49,7 @@ export class TerminalSections implements ITerminalAddon {
       if (marker === 'A') {
         console.log('PromptStart', aid);
         this.registerMarkingPoint('PromptStart', aid);
+        this.maybeFireOnNewPrompt(aid);
       } else if (marker === 'B') {
         this.registerMarkingPoint('PromptEnd', aid);
       } else if (marker === 'C') {
@@ -149,6 +155,27 @@ export class TerminalSections implements ITerminalAddon {
 
     this.orderSection(section);
     updateSectionDecorations(this.terminal, section);
+  }
+
+  /**
+   * §2: fire `onNewPrompt` on the first `A` of a genuinely new `aid`. A
+   * same-`aid` readline redraw (resize, tab-completion) re-emits `A` without a
+   * preceding `D` — clearing in that case would wipe a half-typed command, so
+   * it is skipped via `aid !== this.lastCommittedAid`. Also skipped while
+   * `isReplaying()` is true: §3's raw replay advances the buffer with the same
+   * `A` markers, but those replays are not real prompt commits and clearing
+   * them would defeat the replay.
+   */
+  private maybeFireOnNewPrompt(aid: string | undefined) {
+    if (!aid) return;
+    if (!this.onNewPrompt) return;
+    if (this.isReplaying()) return;
+    if (aid === this.lastCommittedAid) return;
+
+    // TODO: only fire if previous block was executed
+
+    this.lastCommittedAid = aid;
+    this.onNewPrompt(aid);
   }
 }
 

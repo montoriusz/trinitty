@@ -1,7 +1,7 @@
 'use client';
 
-import { ChevronsUpDown } from 'lucide-react';
-import { type ReactNode, useCallback } from 'react';
+import { ChevronsUpDownIcon } from 'lucide-react';
+import { Fragment, type ReactNode, useCallback } from 'react';
 import { Box, Flex } from 'styled-system/jsx';
 import { Button } from '../primitives';
 import * as Menu from '../primitives/menu';
@@ -76,7 +76,7 @@ export function ModelSelectMenu({
             <Box overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">
               {isLoading ? '…' : triggerLabel}
             </Box>
-            <ChevronsUpDown size="14" aria-hidden="true" />
+            <ChevronsUpDownIcon size="14" aria-hidden="true" />
           </Flex>
         </Button>
       </Menu.Trigger>
@@ -97,7 +97,7 @@ function renderGroups(groups: ModelSelectGroup[]): ReactNode[] {
   for (const group of groups) {
     if (group.options.length === 0) continue;
     out.push(
-      <>
+      <Fragment key={group.label}>
         <Menu.ItemGroupLabel fontWeight="semibold">{group.label}</Menu.ItemGroupLabel>
         {group.options.map((option) => (
           <Menu.RadioItem key={option.value} value={option.value} valueText={option.value}>
@@ -105,7 +105,7 @@ function renderGroups(groups: ModelSelectGroup[]): ReactNode[] {
             <Menu.ItemIndicator />
           </Menu.RadioItem>
         ))}
-      </>,
+      </Fragment>,
     );
   }
   return out;

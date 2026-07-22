@@ -1,6 +1,6 @@
 'use client';
 
-import { Play, Terminal, Undo2Icon } from 'lucide-react';
+import { PlayIcon, TerminalIcon, Undo2Icon } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { css, cx } from 'styled-system/css';
 import {
@@ -34,12 +34,8 @@ export function CommandlineSuggestion({
 }: CommandlineSuggestionProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(status === 'pending');
+  const [open, setOpen] = useState(false);
   const [hasMore, setHasMore] = useState(false);
-
-  useEffect(() => {
-    if (status === 'pending') setOpen(true);
-  }, [status]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -64,7 +60,7 @@ export function CommandlineSuggestion({
   let statusStyle = css({ colorPalette: 'blue' });
   if (status === 'pending') statusStyle = css({ colorPalette: 'amber' });
   else if (status === 'accepted') statusStyle = css({ colorPalette: 'green' });
-  else if (status === 'failed') statusStyle = css({ colorPalette: 'red' });
+  // else if (status === 'failed') statusStyle = css({ colorPalette: 'red' });
   else if (status === 'rejected') statusStyle = css({ colorPalette: 'gray' });
 
   const handlers = useMemo(
@@ -107,7 +103,7 @@ export function CommandlineSuggestion({
           size="xs"
           onClick={handlers.onApply}
         >
-          <Play />
+          <PlayIcon />
         </IconButton>
         {status === 'pending' ? (
           <IconButton
@@ -121,7 +117,7 @@ export function CommandlineSuggestion({
           </IconButton>
         ) : (
           <IconButton title="Send to terminal" variant="subtle" size="xs" onClick={handlers.onPut}>
-            <Terminal />
+            <TerminalIcon />
           </IconButton>
         )}
       </div>

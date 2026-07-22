@@ -1,3 +1,2 @@
-export { ChatPane } from './chat-pane';
-export { chatStore } from './chat-store';
-export { useChat } from './use-chat';
+export { Chat } from './chat';
+export { PromptInput } from './prompt-input';

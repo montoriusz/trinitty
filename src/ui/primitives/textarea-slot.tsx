@@ -15,6 +15,8 @@ export type InputProps = ComponentProps<typeof Input>;
 /** The actual textarea. Supports Ark `Field` props such as `autoresize`. */
 export const Input = withContext(Field.Textarea, 'input');
 
+// TODO: focus input on unhandled footer clicks
+
 export type FooterProps = ComponentProps<typeof Footer>;
 /** Slot for extra controls, rendered below the textarea and inside the border. */
 export const Footer = withContext(ark.div, 'footer');

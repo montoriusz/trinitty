@@ -10,7 +10,7 @@
     },
     "windows": [
       {
-        "label": "main",
+        "label": "terminal",
         "decorations": true,
         "fullscreen": false,
         "height": 546,

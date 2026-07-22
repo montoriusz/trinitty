@@ -88,6 +88,7 @@ pub fn run() {
             terminal::write_to_pty,
             terminal::resize_pty,
             terminal::create_shell,
+            terminal::get_live_section_raw,
             chat::get_chat_session,
             chat::read_chat_messages,
             chat::send_chat_message,

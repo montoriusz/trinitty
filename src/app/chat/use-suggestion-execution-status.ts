@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { ChatMessage } from '@/generated';
 
-type SuggestionExecutionMatch = 'accepted' | 'rejected' | 'edited' | 'failed';
+type SuggestionExecutionMatch = 'accepted' | 'rejected' | 'edited';
 
 interface HotStatusUpdate {
   msgId: string;
@@ -71,8 +71,7 @@ export function useSuggestionExecutionStatus(messages: readonly ChatMessage[]) {
           (s) => matchCommands(s.cmdline, m.cmdline) === 'accepted',
         );
         if (matchingIdx !== -1) {
-          queue[matchingIdx].status =
-            m.exit_code == null || m.exit_code === 0 ? 'accepted' : 'failed';
+          queue[matchingIdx].status = 'accepted';
           queue[matchingIdx].termBlockId = m.aid;
           queue = queue.slice(0, matchingIdx);
           continue;

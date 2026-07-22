@@ -514,6 +514,7 @@ async fn fetch_models_from_genai(
     if let Some(k) = key {
         config = config.with_auth(AuthData::from_single(k));
     }
+    // TODO: override for Anthropic
     genai::Client::default()
         .all_model_names(kind, config)
         .await
