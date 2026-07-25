@@ -2731,30 +2731,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "montor-commander"
-version = "0.0.0"
-dependencies = [
- "askama",
- "chrono",
- "dotenvy",
- "genai",
- "keyring",
- "portable-pty",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-opener",
- "tauri-typegen",
- "tempfile",
- "tokio",
- "tracing",
- "tracing-subscriber",
- "uuid",
- "vt100",
-]
-
-[[package]]
 name = "muda"
 version = "0.19.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5429,6 +5405,30 @@ dependencies = [
  "serde",
  "thiserror 2.0.18",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "trinitty"
+version = "0.0.0"
+dependencies = [
+ "askama",
+ "chrono",
+ "dotenvy",
+ "genai",
+ "keyring",
+ "portable-pty",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-opener",
+ "tauri-typegen",
+ "tempfile",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+ "uuid",
+ "vt100",
 ]
 
 [[package]]

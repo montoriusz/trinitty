@@ -6,7 +6,7 @@
  *
  * `Provider.kind` is genai's own `AdapterKind` (a flat serde enum); we reuse
  * the generated `Provider['kind']` literal union as the canonical type rather
- * than maintaining a souffleur-side mirror of the variants.
+ * than maintaining a side mirror of the variants.
  */
 import * as yup from 'yup';
 import type { ModelEntry, Provider, Settings } from '@/generated';

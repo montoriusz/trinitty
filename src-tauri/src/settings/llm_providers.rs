@@ -221,7 +221,7 @@ pub fn resolve_model(providers: &[Provider], alias: &str) -> Result<ResolvedMode
 // Keychain helpers
 // ---------------------------------------------------------------------------
 
-const KEYCHAIN_SERVICE: &str = "montor-commander";
+const KEYCHAIN_SERVICE: &str = "trinitty";
 
 /// Sentinel the FE receives in place of a stored key and returns unchanged when
 /// the user does not edit the field. A returning value equal to this means

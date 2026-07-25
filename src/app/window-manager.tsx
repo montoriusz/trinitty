@@ -23,7 +23,7 @@ export const windowManager = new WindowManagerBuilder()
       },
       observedSettings: ALL_SETTINGS_CATEGORIES,
       windowOptions: {
-        title: 'Montor Commander — Settings',
+        title: 'TriniTTY — Settings',
         height: 500,
         resizable: true,
         width: 800,

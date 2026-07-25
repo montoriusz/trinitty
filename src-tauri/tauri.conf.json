@@ -15,7 +15,7 @@
         "fullscreen": false,
         "height": 546,
         "resizable": true,
-        "title": "Montor Commander",
+        "title": "TriniTTY",
         "width": 1006,
         "center": true,
         "visible": false
@@ -45,7 +45,7 @@
       }
     }
   },
-  "identifier": "com.montor-commander.dev",
+  "identifier": "com.montor.trinitty.dev",
   "plugins": {
     "typegen": {
       "excludePatterns": null,
@@ -62,6 +62,6 @@
       "visualizeDeps": false
     }
   },
-  "productName": "montor-commander",
+  "productName": "trinitty",
   "version": "0.0.1"
 }
