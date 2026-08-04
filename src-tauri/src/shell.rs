@@ -165,7 +165,6 @@ impl Shell {
     /// The actual `$SHELL` binary is used as the program (see [`program`](Self::program)).
     /// Returns `CommandBuilder` directly (no guard) since file-ownership now
     /// lives with the caller.
-    #[cfg(unix)]
     pub fn build_pty_command(&self, assets: &Path) -> Result<CommandBuilder, String> {
         match self.kind {
             ShellKind::Bash => {
