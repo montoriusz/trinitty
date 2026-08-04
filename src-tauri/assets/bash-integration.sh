@@ -1,10 +1,20 @@
-# Source the user's normal interactive config first
+
+# On MSYS2, /etc/profile sets up the environment (PATH, aliases, etc.)
+# for login-style shells. Source it first so the integration runs with
+# the same environment as an interactive MSYS2 bash session.
+# Guarded on $MSYSTEM (set by MSYS2) so this is a no-op elsewhere.
+if [ -n "${MSYSTEM:-}" ] && [ -f /etc/profile ]; then
+    . /etc/profile
+elif [ -f /etc/bash.bashrc ]; then
+    . /etc/bash.bashrc
+fi
 if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
 
 # Add -F to ls alias to enable LLM-visible type indicators
 if [ "$(type -t ls)" = "alias" ]; then
   body=${BASH_ALIASES[ls]}          # raw alias body, no parsing
   alias ls="$body -F"
+  unset body
 elif [ "$(type -t ls)" != "function" ]; then
   alias ls='ls -F'
 fi
