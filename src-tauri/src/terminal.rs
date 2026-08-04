@@ -143,10 +143,6 @@ pub async fn create_shell(
 
     // 3. Spawn the shell into the PTY slave once.
     if !state.shell_started.swap(true, Ordering::SeqCst) {
-        #[cfg(target_os = "windows")]
-        let mut cmd = CommandBuilder::new("powershell.exe");
-
-        #[cfg(not(target_os = "windows"))]
         let mut cmd = {
             // Build the interactive-shell command (`bash --rcfile …` or
             // `zsh -i` with a temp `ZDOTDIR`) from `$SHELL`. All shell-specific

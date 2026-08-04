@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { type CSSProperties, useMemo } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialLight, tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import { cx } from 'styled-system/css';
 import { Box } from 'styled-system/jsx';
 import { prose } from 'styled-system/recipes';
+import { token } from 'styled-system/tokens';
 import { useIsDarkMode } from '@/app/shared/dark-mode-provider';
 import { Code } from '@/ui/primitives';
 
@@ -35,7 +36,8 @@ export function Markdown({ content, className }: MarkdownProps) {
         const inline = 'inline' in props ? !!props.inline : false;
         return !inline && match ? (
           <SyntaxHighlighter
-            style={isDark ? tomorrow : materialLight}
+            style={getCodeThemes(isDark)}
+            customStyle={customCodeStyle}
             language={match[1]}
             PreTag="div"
             {...props}
@@ -63,4 +65,13 @@ export function Markdown({ content, className }: MarkdownProps) {
       </ReactMarkdown>
     </Box>
   );
+}
+
+const customCodeStyle: CSSProperties = {
+  padding: '0.75rem',
+  fontSize: token('fontSizes.sm'),
+};
+
+function getCodeThemes(isDark: boolean) {
+  return isDark ? tomorrow : materialLight;
 }
