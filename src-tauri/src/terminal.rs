@@ -165,10 +165,6 @@ pub async fn create_shell(
             command
         };
 
-        #[cfg(target_os = "windows")]
-        cmd.env("TERM", "cygwin");
-
-        #[cfg(not(target_os = "windows"))]
         cmd.env("TERM", "xterm-256color");
 
         let mut child = state
@@ -231,6 +227,11 @@ fn spawn_reader_thread(
         let mut reader = reader;
         let mut buf = [0u8; 4096];
         let mut carry: Vec<u8> = Vec::new();
+        // After CommandFinished (D), bash-integration.sh may emit a
+        // buffer-clearing sequence (MSYS2 / ConPTY). Suppress forwarding
+        // passthrough segments to the frontend until the next PromptStarted
+        // (A) so the clearing bytes never reach the reinstantiated xterm.js.
+        let mut suppress_passthrough = false;
 
         loop {
             match reader.read(&mut buf) {
@@ -248,14 +249,20 @@ fn spawn_reader_thread(
                     // marker arrives immediately before that marker's bytes.
                     crate::osc133::scan(&mut carry, chunk, |segment| {
                         // 1. Forward to the live terminal (existing behaviour).
+                        //    While `suppress_passthrough` is set (between D and
+                        //    A), skip raw-byte Output events so the MSYS2
+                        //    buffer-clearing sequence is not forwarded. Sequence
+                        //    events (the markers themselves) are always sent.
                         {
                             let guard = slot.lock().unwrap();
                             if let Some(ch) = guard.as_ref() {
                                 match &segment {
                                     Segment::Passthrough(bytes) => {
-                                        let _ = ch.send(TerminalEvent::Output {
-                                            data: String::from_utf8_lossy(bytes).into_owned(),
-                                        });
+                                        if !suppress_passthrough {
+                                            let _ = ch.send(TerminalEvent::Output {
+                                                data: String::from_utf8_lossy(bytes).into_owned(),
+                                            });
+                                        }
                                     }
                                     Segment::Sequence { bytes, event } => {
                                         let _ = ch.send(map_shell_event(event.clone()));
@@ -264,6 +271,21 @@ fn spawn_reader_thread(
                                         });
                                     }
                                 }
+                            }
+                        }
+
+                        // Update the suppress flag *after* forwarding so the D
+                        // marker itself is still sent, and the A marker lifts
+                        // the gate before its own bytes are forwarded.
+                        if let Segment::Sequence { event, .. } = &segment {
+                            match event {
+                                ShellEvent::CommandFinished { .. } => {
+                                    suppress_passthrough = true;
+                                }
+                                ShellEvent::PromptStarted { .. } => {
+                                    suppress_passthrough = false;
+                                }
+                                _ => {}
                             }
                         }
 

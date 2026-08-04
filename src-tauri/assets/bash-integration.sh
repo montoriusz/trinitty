@@ -40,6 +40,14 @@ __osc133_precmd() {
     local ec=$?
     if [[ $__osc133_aid_counter != 0 ]]; then
         printf '\033]133;D;%s;aid=%s-%s\007' "$ec" "$$" "$__osc133_aid_counter"
+        # On MSYS2 / ConPTY, clear the internal screen buffer after each
+        # finished command so the next section starts with a clean slate.
+        # The Rust reader thread filters this out before it reaches the
+        # frontend terminal instance; the recorder already ignores
+        # passthrough between D and A (no active section).
+        if [ -n "${MSYSTEM:-}" ]; then
+            printf '\033[2J\033[H'
+        fi
     fi
     __osc133_aid_counter=$((__osc133_aid_counter + 1))
     local id="$$-$__osc133_aid_counter"
@@ -53,6 +61,6 @@ __osc133_precmd() {
 PROMPT_COMMAND='__osc133_precmd; '"${PROMPT_COMMAND:-}"
 
 # PS0 is printed after a command is read but before it executes -> C marker.
-PS0='${__osc133_c}'"${PS0:-}"
+PS0='\[${__osc133_c}\]'"${PS0:-}"
 # Wrap PS1 with prompt-start (A) and prompt-end (B) markers.
-PS1='${__osc133_a}'"$PS1"'${__osc133_b}'
+PS1='\[${__osc133_a}\]'"$PS1"'\[${__osc133_b}\]'
